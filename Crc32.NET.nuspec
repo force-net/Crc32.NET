@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Crc32.NET</id>
+    <title>Crc32 for .NET</title>
+    <version>1.0.0</version>
+    <authors>force</authors>
+    <owners>force</owners>
+    <licenseUrl>https://github.com/force-net/Crc32.NET/blob/develop/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/force-net/Crc32.NET</projectUrl>
+    <!--iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fast version of Crc32 algorithm for .NET. It can be up to 3x times better than other implemenations. Code based on Crc32C.NET library.</description>
+    <releaseNotes>
+Initial release. 
+    </releaseNotes>
+    <copyright>Copyright by Force 2016</copyright>
+    <tags>crc32 crc-32 crc .NET</tags>
+  </metadata>
+  <files><file src="Crc32.NET\bin\Release\Crc32.NET.*" target="lib\net20" /></files>
+</package>
