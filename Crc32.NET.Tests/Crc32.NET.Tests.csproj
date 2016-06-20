@@ -43,6 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Crc32.1.0.0\lib\net40\Crc32.dll</HintPath>
     </Reference>
+    <Reference Include="klinkby.checksum">
+      <HintPath>..\packages\Klinkby.Checksum.1.0.2.1\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\klinkby.checksum.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>

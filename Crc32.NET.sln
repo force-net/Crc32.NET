@@ -14,14 +14,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{512907
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Build|Any CPU = Build|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Build|Any CPU.ActiveCfg = Build|Any CPU
+		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Build|Any CPU.Build.0 = Build|Any CPU
 		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2CD2407-76A9-4A87-8940-873B59E7F5C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0952CB36-9527-4425-8E84-8E875B6E2229}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{0952CB36-9527-4425-8E84-8E875B6E2229}.Build|Any CPU.Build.0 = Release|Any CPU
 		{0952CB36-9527-4425-8E84-8E875B6E2229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0952CB36-9527-4425-8E84-8E875B6E2229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0952CB36-9527-4425-8E84-8E875B6E2229}.Release|Any CPU.ActiveCfg = Release|Any CPU

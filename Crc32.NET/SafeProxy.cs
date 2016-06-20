@@ -9,7 +9,7 @@
 
 namespace Force.Crc32
 {
-	public class SafeProxy
+	internal class SafeProxy
 	{
 		private const uint Poly = 0xedb88320u;
 

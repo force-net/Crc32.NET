@@ -87,11 +87,17 @@ namespace Force.Crc32
             _currentCrc = 0;
         }
 
+		/// <summary>
+		/// Appends CRC-32 from given buffer
+		/// </summary>
         protected override void HashCore(byte[] input, int offset, int length)
         {
             _currentCrc = AppendInternal(_currentCrc, input, offset, length);
         }
 
+		/// <summary>
+		/// Computes CRC-32 from <see cref="HashCore"/>
+		/// </summary>
         protected override byte[] HashFinal()
         {
 			// Crc32 by dariogriffo uses big endian, so, we need to be compatible and return big endian too

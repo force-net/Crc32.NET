@@ -14,6 +14,7 @@ Library | Speed
 --------|-------
 [CH.Crc32](https://github.com/tanglebones/ch-crc32) by Cliff Hammerschmidt | 117 MB/s
 [Crc32](https://github.com/dariogriffo/Crc32) by Dario Griffo | 382 MB/s
+[Klinkby.Checksum](https://github.com/klinkby/klinkby.checksum) by Mads Breusch Klinkby | 379 MB/s
 [Data.HashFunction.CRC](https://github.com/brandondahler/Data.HashFunction/) by Brandon Dahler | 206 MB/s
 This library | **1078** MB/s
 

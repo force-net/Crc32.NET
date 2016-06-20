@@ -55,5 +55,17 @@ namespace Force.Crc32.Tests
 			Console.WriteLine(crc2.ToString("X8"));
 			Assert.That(crc1, Is.EqualTo(crc2));
 		}
+
+		[Test]
+		public void PartIsWhole()
+		{
+			var bytes = new byte[30000];
+			new Random().NextBytes(bytes);
+			var c = new Crc32Algorithm();
+			var r1 = Crc32Algorithm.Append(0, bytes, 0, 15000);
+			var r2 = Crc32Algorithm.Append(r1, bytes, 15000, 15000);
+			var r3 = Crc32Algorithm.Append(0, bytes, 0, 30000);
+			Assert.That(r2, Is.EqualTo(r3));
+		}
 	}
 }
