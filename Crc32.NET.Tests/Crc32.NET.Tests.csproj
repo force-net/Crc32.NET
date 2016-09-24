@@ -63,6 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BytePatternsTest.cs" />
+    <Compile Include="Crc32Implementations\CH_Crc32_Crc.cs" />
+    <Compile Include="Crc32Implementations\Crc32_Crc32Algorithm.cs" />
+    <Compile Include="Crc32Implementations\CrcCalculator.cs" />
+    <Compile Include="Crc32Implementations\Force_Crc32_Crc32Algorithm.cs" />
+    <Compile Include="Crc32Implementations\Klinkby_Checkum_Crc32.cs" />
+    <Compile Include="Crc32Implementations\System_Data_HashFunction_CRC.cs" />
     <Compile Include="PerformanceTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

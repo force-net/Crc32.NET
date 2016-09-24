@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Data.HashFunction;
 using System.Diagnostics;
-
+using Force.Crc32.Tests.Crc32Implementations;
 using NUnit.Framework;
-
-using E = Crc32.Crc32Algorithm;
 
 namespace Force.Crc32.Tests
 {
@@ -14,98 +11,54 @@ namespace Force.Crc32.Tests
 		[Test]
 		public void ThroughputCHCrc32_By_tanglebones()
 		{
-			var data = new byte[65536];
-			var random = new Random();
-			random.NextBytes(data);
-			long total = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-			{
-				CH.Crc32.Crc.Crc32(data);
-				total += data.Length;
-			}
-
-			stopwatch.Stop();
-			Console.WriteLine("Throughput: {0:0.0} MB/s", total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
-		}
+            Calculate(new CH_Crc32_Crc());
+        }
 
 		[Test]
 		public void ThroughputKlinkby_Checksum()
 		{
-			var data = new byte[65536];
-			var random = new Random();
-			random.NextBytes(data);
-			long total = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-			{
-				Klinkby.Checkum.Crc32.ComputeChecksum(data);
-				total += data.Length;
-			}
-
-			stopwatch.Stop();
-			Console.WriteLine("Throughput: {0:0.0} MB/s", total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+			Calculate(new Klinkby_Checkum_Crc32());
 		}
 
 		[Test]
 		public void ThroughputCrc32_By_dariogriffo()
 		{
-			var data = new byte[65536];
-			var random = new Random();
-			random.NextBytes(data);
-			long total = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-			{
-				E.Compute(data);
-				total += data.Length;
-			}
-
-			stopwatch.Stop();
-			Console.WriteLine("Throughput: {0:0.0} MB/s", total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+			Calculate(new Crc32_Crc32Algorithm());
 		}
 
 		[Test]
 		public void ThroughputCrc32_By_Data_HashFunction_Crc()
 		{
-			var data = new byte[65536];
-			var random = new Random();
-			random.NextBytes(data);
-			var crc = new CRC();
-			long total = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-			{
-				crc.ComputeHash(data);
-				total += data.Length;
-			}
-
-			stopwatch.Stop();
-			Console.WriteLine("Throughput: {0:0.0} MB/s", total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+			Calculate(new System_Data_HashFunction_CRC());
 		}
 
 		[Test]
 		public void ThroughputCrc32_By_Me()
 		{
-			var data = new byte[65536];
-			var random = new Random();
-			random.NextBytes(data);
-			long total = 0;
-
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-			{
-				Crc32Algorithm.Compute(data);
-				total += data.Length;
-			}
-
-			stopwatch.Stop();
-			Console.WriteLine("Throughput: {0:0.0} MB/s", total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+			Calculate(new Force_Crc32_Crc32Algorithm());
 		}
-	}
+
+        private void Calculate(CrcCalculator implementation)
+        {
+            var data = new byte[65536];
+            var random = new Random();
+            random.NextBytes(data);
+            long total = 0;
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
+            {
+                implementation.Calculate(data);
+                total += data.Length;
+            }
+
+            stopwatch.Stop();
+
+            Console.WriteLine("{0} Throughput: {1:0.0} MB/s",
+                implementation.Name,
+                total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+        }
+    }
 }

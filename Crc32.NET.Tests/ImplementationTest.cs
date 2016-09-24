@@ -26,16 +26,6 @@ namespace Force.Crc32.Tests
 		}
 
 		[Test]
-		public void ResultConsistencyLong()
-		{
-			var bytes = new byte[30000];
-			new Random().NextBytes(bytes);
-			var crc1 = (uint)BitConverter.ToInt32(new E().ComputeHash(bytes, 0, bytes.Length), 0);
-			var crc2 = Crc32Algorithm.Append(0, bytes, 0, bytes.Length);
-			Assert.That(crc2, Is.EqualTo(crc1));
-		}
-
-		[Test]
 		public void ResultConsistency2()
 		{
 			Assert.That(Crc32Algorithm.Compute(new byte[] { 1 }), Is.EqualTo(2768625435));
@@ -61,7 +51,6 @@ namespace Force.Crc32.Tests
 		{
 			var bytes = new byte[30000];
 			new Random().NextBytes(bytes);
-			var c = new Crc32Algorithm();
 			var r1 = Crc32Algorithm.Append(0, bytes, 0, 15000);
 			var r2 = Crc32Algorithm.Append(r1, bytes, 15000, 15000);
 			var r3 = Crc32Algorithm.Append(0, bytes, 0, 30000);
