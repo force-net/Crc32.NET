@@ -8,14 +8,23 @@
     <owners>force</owners>
     <licenseUrl>https://github.com/force-net/Crc32.NET/blob/develop/LICENSE</licenseUrl>
     <projectUrl>https://github.com/force-net/Crc32.NET</projectUrl>
-    <!--iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
+    <iconUrl>http://files.force-net.com/crc32-nuget-ico.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fast version of Crc32 algorithm for .NET. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
     <releaseNotes>
-Small technical update. 
+Small technical update. Added support for .NET Core
     </releaseNotes>
     <copyright>Copyright by Force 2016</copyright>
     <tags>crc32 crc-32 crc .NET</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.6">
+        <dependency id="NETStandard.Library" version="[1.6.0, )" />
+      </group>
+    </dependencies>
   </metadata>
-  <files><file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net20" /></files>
+  <files>
+	<file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net20" />
+	<file src="Crc32.NET\bin\BuildCore\Crc32.NET.dll" target="lib\netstandard1.6" />
+	<file src="Crc32.NET\bin\BuildCore\Crc32.NET.xml" target="lib\netstandard1.6" />
+  </files>
 </package>
