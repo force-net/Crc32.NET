@@ -11,8 +11,8 @@ namespace Force.Crc32.Tests
 		[Test]
 		public void ThroughputCHCrc32_By_tanglebones()
 		{
-            Calculate(new CH_Crc32_Crc());
-        }
+			Calculate(new CH_Crc32_Crc());
+		}
 
 		[Test]
 		public void ThroughputKlinkby_Checksum()
@@ -38,27 +38,28 @@ namespace Force.Crc32.Tests
 			Calculate(new Force_Crc32_Crc32Algorithm());
 		}
 
-        private void Calculate(CrcCalculator implementation)
-        {
-            var data = new byte[65536];
-            var random = new Random();
-            random.NextBytes(data);
-            long total = 0;
+		private void Calculate(CrcCalculator implementation)
+		{
+			var data = new byte[65536];
+			var random = new Random();
+			random.NextBytes(data);
+			long total = 0;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
 
-            while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
-            {
-                implementation.Calculate(data);
-                total += data.Length;
-            }
+			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
+			{
+				implementation.Calculate(data);
+				total += data.Length;
+			}
 
-            stopwatch.Stop();
+			stopwatch.Stop();
 
-            Console.WriteLine("{0} Throughput: {1:0.0} MB/s",
-                implementation.Name,
-                total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
-        }
-    }
+			Console.WriteLine(
+				"{0} Throughput: {1:0.0} MB/s",
+				implementation.Name,
+				total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+		}
+	}
 }

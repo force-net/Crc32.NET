@@ -56,5 +56,17 @@ namespace Force.Crc32.Tests
 			var r3 = Crc32Algorithm.Append(0, bytes, 0, 30000);
 			Assert.That(r2, Is.EqualTo(r3));
 		}
+
+		[Test]
+		public void Result_Is_BigEndian()
+		{
+			var bytes = new byte[30000];
+			new Random().NextBytes(bytes);
+			var crc1 = Crc32Algorithm.Append(0, bytes, 0, bytes.Length);
+			var crc2Bytes = new Crc32Algorithm().ComputeHash(bytes);
+			if (BitConverter.IsLittleEndian) crc2Bytes = crc2Bytes.Reverse().ToArray();
+			var crc2 = BitConverter.ToUInt32(crc2Bytes, 0);
+			Assert.That(crc2, Is.EqualTo(crc1));
+		}
 	}
 }
