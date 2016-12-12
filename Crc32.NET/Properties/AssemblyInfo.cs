@@ -18,8 +18,10 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
+#if !NETCORE
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("7006accd-896a-4966-add2-d881e72fbb4a")]
+#endif
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,7 +34,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.1.1")]
+[assembly: AssemblyFileVersion("1.0.2.2")]
 
 #if BUILD
 [assembly: AssemblyKeyFileAttribute("..\\public.snk")]
