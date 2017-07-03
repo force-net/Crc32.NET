@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Crc32.NET</id>
-    <title>Crc32 for .NET</title>
+    <title>Crc32 and Crc32C for .NET</title>
     <version>1.1.0</version>
     <authors>force</authors>
     <owners>force</owners>
@@ -17,7 +17,7 @@ Added Crc32C implementation (due lack of .NET core implementations).
 Added option to constructor with ability to specify BigEndian/LittleEndian byte conversion for HashFinal.
     </releaseNotes>
     <copyright>Copyright by Force 2016</copyright>
-    <tags>crc32 crc-32 crc .NET</tags>
+    <tags>crc32 crc-32 crc crc32c .NET</tags>
     <dependencies>
       <group targetFramework="net20">
       </group>
