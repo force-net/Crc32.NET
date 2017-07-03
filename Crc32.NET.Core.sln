@@ -1,5 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-	Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Crc32.NET.Core", "Crc32.NET\Crc32.NET.Core.xproj", "{4889B52E-03E0-4632-9655-B209FBCD6EBA}"
+	Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Crc32.NET", "Crc32.NET\Crc32.NET.xproj", "{4889B52E-03E0-4632-9655-B209FBCD6EBA}"
+	EndProject
+	Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Crc32.NET.Tests", "Crc32.NET.Tests\Crc32.NET.Tests.xproj", "{561519E1-4C48-4934-B56D-042835CD2D29}"
 	EndProject

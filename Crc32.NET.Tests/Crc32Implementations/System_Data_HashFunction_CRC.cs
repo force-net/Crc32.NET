@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETCORE
+using System;
 using System.Data.HashFunction;
 
 namespace Force.Crc32.Tests.Crc32Implementations
@@ -18,3 +19,4 @@ namespace Force.Crc32.Tests.Crc32Implementations
         private readonly CRC _crc;
     }
 }
+#endif

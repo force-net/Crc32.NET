@@ -44,9 +44,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Crc32CAlgorithm.cs" />
+    <Compile Include="SafeProxyC.cs" />
     <Compile Include="Crc32Algorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafeProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

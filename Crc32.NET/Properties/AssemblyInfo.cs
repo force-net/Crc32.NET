@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Force")]
 [assembly: AssemblyProduct("Crc32.NET")]
-[assembly: AssemblyCopyright("Copyright © Force 2016")]
+[assembly: AssemblyCopyright("Copyright © Force 2016-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.3.3")]
+[assembly: AssemblyFileVersion("1.1.0.4")]
 
 #if BUILD
 [assembly: AssemblyKeyFileAttribute("..\\public.snk")]

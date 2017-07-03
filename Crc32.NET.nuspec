@@ -3,16 +3,18 @@
   <metadata>
     <id>Crc32.NET</id>
     <title>Crc32 for .NET</title>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <authors>force</authors>
     <owners>force</owners>
     <licenseUrl>https://github.com/force-net/Crc32.NET/blob/develop/LICENSE</licenseUrl>
     <projectUrl>https://github.com/force-net/Crc32.NET</projectUrl>
     <iconUrl>http://files.force-net.com/crc32-nuget-ico.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Fast version of Crc32 algorithm for .NET. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
+    <description>Fast version of Crc32 &amp; Crc32C algorithms for .NET and .NET Core. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
     <releaseNotes>
-Downgraded .NET core version from 1.6 to 1.3 for better compatibility
+Additional improvements in calculation with +70MB/s calculation speed as result.
+Added Crc32C implementation (due lack of .NET core implementations).
+Added option to constructor with ability to specify BigEndian/LittleEndian byte conversion for HashFinal.
     </releaseNotes>
     <copyright>Copyright by Force 2016</copyright>
     <tags>crc32 crc-32 crc .NET</tags>
@@ -26,7 +28,7 @@ Downgraded .NET core version from 1.6 to 1.3 for better compatibility
   </metadata>
   <files>
 	<file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net20" />
-	<file src="Crc32.NET\bin\BuildCore\Crc32.NET.dll" target="lib\netstandard1.3" />
-	<file src="Crc32.NET\bin\BuildCore\Crc32.NET.xml" target="lib\netstandard1.3" />
+	<file src="Crc32.NET\bin\BuildCore\netstandard1.3\Crc32.NET.dll" target="lib\netstandard1.3" />
+	<file src="Crc32.NET\bin\BuildCore\netstandard1.3\Crc32.NET.xml" target="lib\netstandard1.3" />
   </files>
 </package>

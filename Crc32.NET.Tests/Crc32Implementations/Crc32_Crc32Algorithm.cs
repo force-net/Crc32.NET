@@ -1,4 +1,5 @@
-﻿using Crc = Crc32.Crc32Algorithm;
+﻿#if !NETCORE
+using Crc = Crc32.Crc32Algorithm;
 
 namespace Force.Crc32.Tests.Crc32Implementations
 {
@@ -14,3 +15,4 @@ namespace Force.Crc32.Tests.Crc32Implementations
 		}
 	}
 }
+#endif

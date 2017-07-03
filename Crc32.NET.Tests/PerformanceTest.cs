@@ -8,6 +8,7 @@ namespace Force.Crc32.Tests
 	[TestFixture]
 	public class PerformanceTest
 	{
+#if !NETCORE
 		[Test]
 		public void ThroughputCHCrc32_By_tanglebones()
 		{
@@ -37,7 +38,14 @@ namespace Force.Crc32.Tests
 		{
 			Calculate(new Dexiom_Quick_Crc32());
 		}
-
+	
+		[Test]
+		public void ThroughputCrc32C_Crc32C()
+		{
+			Calculate(new Crc32C_Crc32CAlgorithm());
+		}
+#endif
+	
 		[Test]
 		public void ThroughputCrc32_By_Me()
 		{
@@ -48,6 +56,12 @@ namespace Force.Crc32.Tests
 		public void ThroughputCrc32_By_Me_Unaligned()
 		{
 			Calculate(new Force_Crc32_Crc32Algorithm(), 60);
+		}
+
+		[Test]
+		public void ThroughputCrc32C_By_Me()
+		{
+			Calculate(new Force_Crc32_Crc32CAlgorithm());
 		}
 
 		private void Calculate(CrcCalculator implementation, int size = 65536)

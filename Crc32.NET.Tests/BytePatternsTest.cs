@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETCORE
+using System;
 using System.Linq;
 using Force.Crc32.Tests.Crc32Implementations;
 using NUnit.Framework;
@@ -89,3 +90,5 @@ namespace Force.Crc32.Tests
 		private readonly CrcCalculator _referenceImplementation = new System_Data_HashFunction_CRC();
 	}
 }
+
+#endif

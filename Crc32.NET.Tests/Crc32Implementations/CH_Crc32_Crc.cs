@@ -1,4 +1,6 @@
-﻿namespace Force.Crc32.Tests.Crc32Implementations
+﻿#if !NETCORE
+
+namespace Force.Crc32.Tests.Crc32Implementations
 {
 	public class CH_Crc32_Crc : CrcCalculator
 	{
@@ -12,3 +14,4 @@
 		}
 	}
 }
+#endif

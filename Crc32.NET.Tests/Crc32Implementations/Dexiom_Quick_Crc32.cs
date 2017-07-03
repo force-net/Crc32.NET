@@ -1,4 +1,5 @@
-﻿namespace Force.Crc32.Tests.Crc32Implementations
+﻿#if !NETCORE
+namespace Force.Crc32.Tests.Crc32Implementations
 {
 	public class Dexiom_Quick_Crc32 : CrcCalculator
 	{
@@ -13,3 +14,4 @@
 		}
 	}
 }
+#endif

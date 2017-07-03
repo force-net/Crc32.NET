@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Crc32.1.0.0\lib\net40\Crc32.dll</HintPath>
     </Reference>
+    <Reference Include="Crc32C.NET, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crc32C.NET.1.0.5.0\lib\net20\Crc32C.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dexiom.QuickCrc32, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dexiom.QuickCrc32.1.0.3\lib\net40\Dexiom.QuickCrc32.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BytePatternsTest.cs" />
+    <Compile Include="Crc32Implementations\Crc32C_Crc32CAlgorithm.cs" />
+    <Compile Include="Crc32Implementations\Force_Crc32_Crc32CAlgorithm.cs" />
+    <Compile Include="ImplementationCTest.cs" />
     <Compile Include="Crc32Implementations\CH_Crc32_Crc.cs" />
     <Compile Include="Crc32Implementations\Dexiom_Quick_Crc32.cs" />
     <Compile Include="Crc32Implementations\Crc32_Crc32Algorithm.cs" />

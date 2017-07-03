@@ -14,9 +14,14 @@ namespace Force.Crc32
 	{
 		private const uint Poly = 0xedb88320u;
 
-		private static readonly uint[] _table = new uint[16 * 256];
+		private readonly uint[] _table = new uint[16 * 256];
 
-		static SafeProxy()
+		internal SafeProxy()
+		{
+			Init(Poly);
+		}
+
+		protected void Init(uint poly)
 		{
 			var table = _table;
 			for (uint i = 0; i < 256; i++)
@@ -24,7 +29,7 @@ namespace Force.Crc32
 				uint res = i;
 				for (int t = 0; t < 16; t++)
 				{
-					for (int k = 0; k < 8; k++) res = (res & 1) == 1 ? Poly ^ (res >> 1) : (res >> 1);
+					for (int k = 0; k < 8; k++) res = (res & 1) == 1 ? poly ^ (res >> 1) : (res >> 1);
 					table[(t * 256) + i] = res;
 				}
 			}
