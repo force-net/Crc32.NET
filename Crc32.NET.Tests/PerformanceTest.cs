@@ -33,33 +33,50 @@ namespace Force.Crc32.Tests
 		}
 
 		[Test]
+		public void ThroughputCrc32_By_Dexiom()
+		{
+			Calculate(new Dexiom_Quick_Crc32());
+		}
+
+		[Test]
 		public void ThroughputCrc32_By_Me()
 		{
 			Calculate(new Force_Crc32_Crc32Algorithm());
 		}
 
-		private void Calculate(CrcCalculator implementation)
+		[Test]
+		public void ThroughputCrc32_By_Me_Unaligned()
 		{
-			var data = new byte[65536];
+			Calculate(new Force_Crc32_Crc32Algorithm(), 60);
+		}
+
+		private void Calculate(CrcCalculator implementation, int size = 65536)
+		{
+			var data = new byte[size];
 			var random = new Random();
 			random.NextBytes(data);
-			long total = 0;
 
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-
-			while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
+			var maxRate = 0.0;
+			for (var i = 0; i < 3; i++)
 			{
-				implementation.Calculate(data);
-				total += data.Length;
-			}
+				long total = 0;
+				stopwatch.Restart();
+				while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
+				{
+					implementation.Calculate(data);
+					total += data.Length;
+				}
 
-			stopwatch.Stop();
+				stopwatch.Stop();
+				maxRate = Math.Max(total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024, maxRate);
+			}
 
 			Console.WriteLine(
 				"{0} Throughput: {1:0.0} MB/s",
 				implementation.Name,
-				total / stopwatch.Elapsed.TotalSeconds / 1024 / 1024);
+				maxRate);
 		}
 	}
 }

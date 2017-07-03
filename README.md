@@ -1,6 +1,6 @@
 ﻿# Crc32.NET
 
-Optimized and fast implementation of Crc32 algorithm in pure .NET. 
+Optimized and fast managed implementation of Crc32 algorithm for .NET and .NET Core. 
 
 *(But if you need, I can add native implementation which is twice faster .NET version with transparent .net wrapper)*
 
@@ -13,16 +13,17 @@ If you do not not catch the difference, it is *C* (Castagnoli). I recommend to u
 Library | Speed
 --------|-------
 [CH.Crc32](https://github.com/tanglebones/ch-crc32) by Cliff Hammerschmidt | 117 MB/s
-[Crc32](https://github.com/dariogriffo/Crc32) by Dario Griffo | 382 MB/s
-[Klinkby.Checksum](https://github.com/klinkby/klinkby.checksum) by Mads Breusch Klinkby | 379 MB/s
+[Crc32](https://github.com/dariogriffo/Crc32) by Dario Griffo | 401 MB/s
+[Klinkby.Checksum](https://github.com/klinkby/klinkby.checksum) by Mads Breusch Klinkby | 400 MB/s
 [Data.HashFunction.CRC](https://github.com/brandondahler/Data.HashFunction/) by Brandon Dahler | 206 MB/s
-This library | **1078** MB/s
+[Dexiom.QuickCrc32](https://github.com/Dexiom/Dexiom.QuickCrc32/) by Jonathan Paré | 364 MB/s
+This library | **1137** MB/s
 
 ## Some notes
 
-I think about making a pull request to [Crc32](https://github.com/dariogriffo/Crc32) library, but it seems, this library was abandoned. Anyway, I check, that results of my and Crc32 library are fully compatible. And you can switch from Crc32 library to this.
+I thought about making a pull request to [Crc32](https://github.com/dariogriffo/Crc32) library, but it seems, this library was abandoned. Anyway, I implement my library to be fully compatible with Crc32 library. And you can switch from Crc32 library to this.
 
-Api interface has been taken from [Crc32C.NET](https://crc32c.angeloflogic.com/) library. It is very handy for using in applications.
+Api interface was taken from [Crc32C.NET](https://crc32c.angeloflogic.com/) library. It is very handy for using in applications.
 
 ## License
 
