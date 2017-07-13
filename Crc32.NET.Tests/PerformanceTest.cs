@@ -44,6 +44,12 @@ namespace Force.Crc32.Tests
 		{
 			Calculate(new Crc32C_Crc32CAlgorithm());
 		}
+#else
+		[Test]
+		public void ThroughputCrc32C_Standard()
+		{
+			Calculate(new Crc32C_Standard());
+		}
 #endif
 	
 		[Test]

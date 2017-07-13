@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Crc32.NET</id>
-    <title>Crc32 and Crc32C for .NET</title>
+    <title>Crc32 for .NET</title>
     <version>1.1.0</version>
     <authors>force</authors>
     <owners>force</owners>
@@ -12,11 +12,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fast version of Crc32 &amp; Crc32C algorithms for .NET and .NET Core. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
     <releaseNotes>
-Additional improvements in calculation with +70MB/s calculation speed as result.
-Added Crc32C implementation (due lack of .NET core implementations).
+Additional improvements in algorithm with +70MB/s calculation speed as result.
+Added Crc32C implementation (due lack of other .NET core implementations).
 Added option to constructor with ability to specify BigEndian/LittleEndian byte conversion for HashFinal.
     </releaseNotes>
-    <copyright>Copyright by Force 2016</copyright>
+    <copyright>Copyright by Force 2016-2017</copyright>
     <tags>crc32 crc-32 crc crc32c .NET</tags>
     <dependencies>
       <group targetFramework="net20">
