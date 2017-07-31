@@ -4,6 +4,12 @@ Optimized and fast managed implementation of Crc32 & Crc32C (Castagnoly) algorit
 
 *(But if you need, I can add native implementation (with transparent .net wrapper) which is twice faster .NET version)*
 
+Installation through Nuget:
+
+```
+	Install-Package Crc32.NET
+```
+
 ### Version 1.1.0 Remarks
 
 Initially, this library only support Crc32 checksum, but I found, that there are lack of .NET Core libraries for Crc32 calculation. So, I've added Crc32C (Castagnoli) managed implementation in this library. Other Crc32 variants (like Crc32Q or Crc32K) seems to be unpopular to implement it here.
