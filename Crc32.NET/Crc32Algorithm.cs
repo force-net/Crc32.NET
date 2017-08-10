@@ -95,6 +95,62 @@ namespace Force.Crc32
 		}
 
 		/// <summary>
+		/// Computes CRC-32 from input buffer and writes it after end of data (buffer should have 4 bytes reserved space for it). Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[],int,int)"/>
+		/// </summary>
+		/// <param name="input">Input buffer with data to be checksummed.</param>
+		/// <param name="offset">Offset of the input data within the buffer.</param>
+		/// <param name="length">Length of the input data in the buffer.</param>
+		/// <returns>CRC-32 of the data in the buffer.</returns>
+		public static uint ComputeAndWriteToEnd(byte[] input, int offset, int length)
+		{
+			if (length + 4 > input.Length)
+				throw new ArgumentOutOfRangeException("length", "Length of data should be less than array length - 4 bytes of CRC data");
+			var crc = Append(0, input, offset, length);
+			var r = offset + length;
+			input[r] = (byte)crc;
+			input[r + 1] = (byte)(crc >> 8);
+			input[r + 2] = (byte)(crc >> 16);
+			input[r + 3] = (byte)(crc >> 24);
+			return crc;
+		}
+
+		/// <summary>
+		/// Computes CRC-32 from input buffer - 4 bytes and writes it as last 4 bytes of buffer. Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[])"/>
+		/// </summary>
+		/// <param name="input">Input buffer with data to be checksummed.</param>
+		/// <returns>CRC-32 of the data in the buffer.</returns>
+		public static uint ComputeAndWriteToEnd(byte[] input)
+		{
+			if (input.Length < 4)
+				throw new ArgumentOutOfRangeException("input", "input array should be 4 bytes at least");
+			return ComputeAndWriteToEnd(input, 0, input.Length - 4);
+		}
+
+		/// <summary>
+		/// Validates correctness of CRC-32 data in source buffer with assumption that CRC-32 data located at end of buffer in reverse bytes order. Can be used in conjunction with <see cref="ComputeAndWriteToEnd(byte[],int,int)"/>
+		/// </summary>
+		/// <param name="input">Input buffer with data to be checksummed.</param>
+		/// <param name="offset">Offset of the input data within the buffer.</param>
+		/// <param name="lengthWithCrc">Length of the input data in the buffer with CRC-32 bytes.</param>
+		/// <returns>Is checksum valid.</returns>
+		public static bool IsValidWithCrcAtEnd(byte[] input, int offset, int lengthWithCrc)
+		{
+			return Append(0, input, offset, lengthWithCrc) == 0x2144DF1C;
+		}
+
+		/// <summary>
+		/// Validates correctness of CRC-32 data in source buffer with assumption that CRC-32 data located at end of buffer in reverse bytes order. Can be used in conjunction with <see cref="ComputeAndWriteToEnd(byte[],int,int)"/>
+		/// </summary>
+		/// <param name="input">Input buffer with data to be checksummed.</param>
+		/// <returns>Is checksum valid.</returns>
+		public static bool IsValidWithCrcAtEnd(byte[] input)
+		{
+			if (input.Length < 4)
+				throw new ArgumentOutOfRangeException("input", "input array should be 4 bytes at least");
+			return Append(0, input, 0, input.Length) == 0x2144DF1C;
+		}
+
+		/// <summary>
 		/// Resets internal state of the algorithm. Used internally.
 		/// </summary>
 		public override void Initialize()

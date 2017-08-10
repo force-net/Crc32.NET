@@ -2637,7 +2637,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Crc32.NET/1.1.0": {
+      "Crc32.NET/1.2.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
@@ -7761,7 +7761,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Crc32.NET/1.1.0": {
+    "Crc32.NET/1.2.0": {
       "type": "project",
       "path": "../Crc32.NET/project.json",
       "msbuildProject": "../Crc32.NET/Crc32.NET.xproj"
@@ -7770,7 +7770,7 @@
   "projectFileDependencyGroups": {
     "": [
       "CRC32C.Standard >= 1.0.0",
-      "Crc32.NET >= 1.1.0",
+      "Crc32.NET >= 1.2.0",
       "NUnit >= 3.6.0"
     ],
     ".NETCoreApp,Version=v1.0": [

@@ -16,6 +16,28 @@ Initially, this library only support Crc32 checksum, but I found, that there are
 
 So, if you need to use Crc32C for .NET Core, you can use this library. But if you only use 'big' .NET frameworks, it is better to use [Crc32C.NET](https://crc32c.angeloflogic.com/) for Crc32C? because it has fast native implementation. 
 
+### Version 1.2.0 Remarks (not in production yet)
+
+CRC algorithms has interesting feature: if we calculate it for some data and write result CRC data to end of source data, then calculate data **with** this CRC we'll receive a constant number.
+This number is 0x2144DF1C for CRC32 and 0x48674BC7 for CRC32C.
+
+This feature can be used for more convenient CRC usage, e.g. validation of correctness is a simple comparison with constant. There are no requirement to decode CRC value from input array and compare it with calculated data.
+
+So in 1.2.0 version, I've added 2 methods (with overloads) to use this feature:
+
+```
+var inputArray = new byte[realDataLength + 4];
+// write real data to inputArray
+Crc32Algorithm.ComputeAndWriteToEnd(inputArray); // last 4 bytes contains CRC
+// transferring data or writing reading, and checking as final operation
+if (!Crc32Algorithm.IsValidWithCrcAtEnd(inputArray))
+	throw new InvalidOperationException("Data was tampered");
+
+```
+
+In other words, you should pass some input buffer to calculation function and it will write CRC data at last 4 bytes. After that, when you need validation, you should pass this buffer to validation function and it will return _is data correct_.
+ 
+
 ## Description
 
 This library is port of [Crc32C.NET](https://crc32c.angeloflogic.com/) by Robert Važan but for Crc32 algorithm. Also, this library contains optimizations for managed code, so, it really faster than other Crc32 implementations. 

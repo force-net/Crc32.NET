@@ -88,5 +88,36 @@ namespace Force.Crc32.Tests
 			var crc2 = BitConverter.ToUInt32(crc2Bytes, 0);
 			Assert.That(crc2, Is.EqualTo(crc1));
 		}
+
+		[Test]
+		[TestCase(0)]
+		[TestCase(1)]
+		[TestCase(2)]
+		[TestCase(3)]
+		[TestCase(4)]
+		[TestCase(5)]
+		[TestCase(11)]
+		[TestCase(30)]
+		[TestCase(200)]
+		[TestCase(10000)]
+		public void Computation_With_Crc_End_Should_Be_Validated(int length)
+		{
+			var buf = new byte[length + 4];
+			var r = new Random();
+			r.NextBytes(buf);
+			Crc32Algorithm.ComputeAndWriteToEnd(buf);
+			Assert.That(Crc32Algorithm.IsValidWithCrcAtEnd(buf), Is.True);
+			buf[r.Next(buf.Length)] ^= 0x1;
+			Assert.That(Crc32Algorithm.IsValidWithCrcAtEnd(buf), Is.False);
+
+			// partial test
+			if (length > 2)
+			{
+				Crc32Algorithm.ComputeAndWriteToEnd(buf, 1, length - 2);
+				Assert.That(Crc32Algorithm.IsValidWithCrcAtEnd(buf, 1, length - 2 + 4), Is.True);
+				buf[1 + r.Next(buf.Length - 2)] ^= 0x1;
+				Assert.That(Crc32Algorithm.IsValidWithCrcAtEnd(buf, 1, length - 2 + 4), Is.False);
+			}
+		}
 	}
 }
