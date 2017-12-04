@@ -50,7 +50,7 @@ namespace Force.Crc32
 			if (input == null)
 				throw new ArgumentNullException("input");
 			if (offset < 0 || length < 0 || offset + length > input.Length)
-				throw new ArgumentOutOfRangeException("length", "Selected range is outside the bounds of the input array");
+				throw new ArgumentOutOfRangeException("length");
 			return AppendInternal(initial, input, offset, length);
 		}
 
@@ -121,7 +121,7 @@ namespace Force.Crc32
 		public static uint ComputeAndWriteToEnd(byte[] input)
 		{
 			if (input.Length < 4)
-				throw new ArgumentOutOfRangeException("input", "input array should be 4 bytes at least");
+				throw new ArgumentOutOfRangeException("input", "Input array should be 4 bytes at least");
 			return ComputeAndWriteToEnd(input, 0, input.Length - 4);
 		}
 
@@ -145,7 +145,7 @@ namespace Force.Crc32
 		public static bool IsValidWithCrcAtEnd(byte[] input)
 		{
 			if (input.Length < 4)
-				throw new ArgumentOutOfRangeException("input", "input array should be 4 bytes at least");
+				throw new ArgumentOutOfRangeException("input", "Input array should be 4 bytes at least");
 			return Append(0, input, 0, input.Length) == 0x48674BC7;
 		}
 
