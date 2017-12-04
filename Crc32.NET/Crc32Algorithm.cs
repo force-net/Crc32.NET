@@ -18,7 +18,7 @@ namespace Force.Crc32
 		/// </summary>
 		public Crc32Algorithm()
 		{
-#if !NETCORE
+#if !NETCORE13
 			HashSizeValue = 32;
 #endif
 		}
@@ -49,9 +49,9 @@ namespace Force.Crc32
 		public static uint Append(uint initial, byte[] input, int offset, int length)
 		{
 			if (input == null)
-				throw new ArgumentNullException();
+				throw new ArgumentNullException("input");
 			if (offset < 0 || length < 0 || offset + length > input.Length)
-				throw new ArgumentOutOfRangeException("Selected range is outside the bounds of the input array");
+				throw new ArgumentOutOfRangeException("length", "Selected range is outside the bounds of the input array");
 			return AppendInternal(initial, input, offset, length);
 		}
 
