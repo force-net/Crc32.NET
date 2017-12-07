@@ -16,7 +16,7 @@ Initially, this library only support Crc32 checksum, but I found, that there are
 
 So, if you need to use Crc32C for .NET Core, you can use this library. But if you only use 'big' .NET frameworks, it is better to use [Crc32C.NET](https://crc32c.angeloflogic.com/) for Crc32C? because it has fast native implementation. 
 
-### Version 1.2.0 Remarks (not in production yet)
+### Version 1.2.0 Remarks
 
 CRC algorithms has interesting feature: if we calculate it for some data and write result CRC data to end of source data, then calculate data **with** this CRC we'll receive a constant number.
 This number is 0x2144DF1C for CRC32 and 0x48674BC7 for CRC32C.

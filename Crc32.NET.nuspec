@@ -12,9 +12,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fast version of Crc32 &amp; Crc32C algorithms for .NET and .NET Core. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
     <releaseNotes>
-Additional improvements in algorithm with +70MB/s calculation speed as result.
-Added Crc32C implementation (due lack of other .NET core implementations).
-Added option to constructor with ability to specify BigEndian/LittleEndian byte conversion for HashFinal.
+Added helper methods for computing and validating Crc32 (can be convenient sometimes)
+Added support for .NET Standard 2.0 
     </releaseNotes>
     <copyright>Copyright by Force 2016-2017</copyright>
     <tags>crc32 crc-32 crc crc32c .NET</tags>
