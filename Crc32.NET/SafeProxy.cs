@@ -57,10 +57,10 @@ namespace Force.Crc32
 					^ table[(9 * 256) + input[offset + 6]] 
 					^ table[(8 * 256) + input[offset + 7]];
 
-				var d = table[(15 * 256) + ((crcLocal ^ input[offset]) & 0xff)]
-					^ table[(14 * 256) + (((crcLocal >> 8) ^ input[offset + 1]) & 0xff)]
-					^ table[(13 * 256) + (((crcLocal >> 16) ^ input[offset + 2]) & 0xff)]
-					^ table[(12 * 256) + (((crcLocal >> 24) ^ input[offset + 3]) & 0xff)];
+				var d = table[(15 * 256) + ((byte)crcLocal ^ input[offset])]
+					^ table[(14 * 256) + ((byte)(crcLocal >> 8) ^ input[offset + 1])]
+					^ table[(13 * 256) + ((byte)(crcLocal >> 16) ^ input[offset + 2])]
+					^ table[(12 * 256) + ((crcLocal >> 24) ^ input[offset + 3])];
 
 				crcLocal = d ^ c ^ b ^ a;
 				offset += 16;
