@@ -68,7 +68,7 @@ namespace Force.Crc32
 			}
 
 			while (--length >= 0)
-				crcLocal = table[(crcLocal ^ input[offset++]) & 0xff] ^ crcLocal >> 8;
+				crcLocal = table[(byte)(crcLocal ^ input[offset++])] ^ crcLocal >> 8;
 
 			return crcLocal ^ uint.MaxValue;
 		}

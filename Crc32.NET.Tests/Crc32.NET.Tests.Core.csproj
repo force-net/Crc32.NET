@@ -13,10 +13,11 @@
     <ProjectReference Include="..\Crc32.NET\Crc32.NET.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="K4os.Hash.Crc" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
     <PackageReference Include="CRC32C.Standard" Version="1.0.0" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
     <PackageReference Include="NETStandard.Library" Version="2.0.0" />
@@ -31,12 +32,15 @@
     <PackageReference Include="System.Data.HashFunction.CRC" Version="1.8.2.2" />
     <PackageReference Include="System.Data.HashFunction.Interfaces" Version="1.0.0.2" />
     <PackageReference Include="CRC32C.Standard" Version="1.0.0" />
-    <PackageReference Include="NUnit" Version="3.6.0" />
+    <!--PackageReference Include="NUnit" Version="3.6.0" /-->
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
     <DefineConstants>$(DefineConstants);NETCORE;;NETCORE13</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <DefineConstants>$(DefineConstants);NETCORE;NETCORE20</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);COREVERSION</DefineConstants>
   </PropertyGroup>
 </Project>

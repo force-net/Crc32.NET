@@ -55,7 +55,8 @@ Library | Speed
 [Klinkby.Checksum](https://github.com/klinkby/klinkby.checksum) by Mads Breusch Klinkby | 400 MB/s
 [Data.HashFunction.CRC](https://github.com/brandondahler/Data.HashFunction/) by Brandon Dahler | 206 MB/s
 [Dexiom.QuickCrc32](https://github.com/Dexiom/Dexiom.QuickCrc32/) by Jonathan Paré | 364 MB/s
-This library | **1150** MB/s
+[K4os.Hash.Crc](https://github.com/MiloszKrajewski/K4os.Hash.Crc) by Milosz Krajewski  | 399 MB/s
+This library | **1170** MB/s
 
 ## Some notes
 

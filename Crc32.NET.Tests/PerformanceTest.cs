@@ -70,6 +70,14 @@ namespace Force.Crc32.Tests
 			Calculate(new Force_Crc32_Crc32CAlgorithm());
 		}
 
+#if COREVERSION && !NETCORE13
+		[Test]
+		public void ThroughputCrc32C_By_K4os_Hash_Crc()
+		{
+			Calculate(new K4os_Hash_Crc());
+		}
+#endif
+
 		private void Calculate(CrcCalculator implementation, int size = 65536)
 		{
 			var data = new byte[size];
