@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace Force.Crc32
@@ -51,7 +52,10 @@ namespace Force.Crc32
 				throw new ArgumentNullException("input");
 			if (offset < 0 || length < 0 || offset + length > input.Length)
 				throw new ArgumentOutOfRangeException("length");
-			return AppendInternal(initial, input, offset, length);
+            using (var stream = new MemoryStream(input, offset, length, false, false))
+            {
+                return AppendInternal(initial, stream);
+            }
 		}
 
 		/// <summary>
@@ -68,17 +72,34 @@ namespace Force.Crc32
 		{
 			if (input == null)
 				throw new ArgumentNullException("input");
-			return AppendInternal(initial, input, 0, input.Length);
+			return Append(initial, input, 0, input.Length);
 		}
 
-		/// <summary>
-		/// Computes CRC-32C from input buffer.
-		/// </summary>
-		/// <param name="input">Input buffer with data to be checksummed.</param>
-		/// <param name="offset">Offset of the input data within the buffer.</param>
-		/// <param name="length">Length of the input data in the buffer.</param>
-		/// <returns>CRC-32C of the data in the buffer.</returns>
-		public static uint Compute(byte[] input, int offset, int length)
+        /// <summary>
+        /// Computes CRC-32C from multiple buffers.
+        /// Call this method multiple times to chain multiple buffers.
+        /// </summary>
+        /// <param name="initial">
+        /// Initial CRC value for the algorithm. It is zero for the first buffer.
+        /// Subsequent buffers should have their initial value set to CRC value returned by previous call to this method.
+        /// </param>
+        /// <param name="stream">Input stream containing data to be checksummed.</param>
+        /// <returns>Accumulated CRC-32C of all buffers processed so far.</returns>
+        public static uint Append(uint initial, Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException(nameof(stream));
+            return Append(initial, stream);
+        }
+
+        /// <summary>
+        /// Computes CRC-32C from input buffer.
+        /// </summary>
+        /// <param name="input">Input buffer with data to be checksummed.</param>
+        /// <param name="offset">Offset of the input data within the buffer.</param>
+        /// <param name="length">Length of the input data in the buffer.</param>
+        /// <returns>CRC-32C of the data in the buffer.</returns>
+        public static uint Compute(byte[] input, int offset, int length)
 		{
 			return Append(0, input, offset, length);
 		}
@@ -93,14 +114,24 @@ namespace Force.Crc32
 			return Append(0, input);
 		}
 
-		/// <summary>
-		/// Computes CRC-32C from input buffer and writes it after end of data (buffer should have 4 bytes reserved space for it). Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[],int,int)"/>
-		/// </summary>
-		/// <param name="input">Input buffer with data to be checksummed.</param>
-		/// <param name="offset">Offset of the input data within the buffer.</param>
-		/// <param name="length">Length of the input data in the buffer.</param>
-		/// <returns>CRC-32C of the data in the buffer.</returns>
-		public static uint ComputeAndWriteToEnd(byte[] input, int offset, int length)
+        /// <summary>
+        /// Computes CRC-32C from input buffer.
+        /// </summary>
+        /// <param name="stream">Stream containing data to be checksummed.</param>
+        /// <returns>CRC-32C of the buffer.</returns>
+        public static uint Compute(Stream stream)
+        {
+            return AppendInternal(0, stream);
+        }
+
+        /// <summary>
+        /// Computes CRC-32C from input buffer and writes it after end of data (buffer should have 4 bytes reserved space for it). Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[],int,int)"/>
+        /// </summary>
+        /// <param name="input">Input buffer with data to be checksummed.</param>
+        /// <param name="offset">Offset of the input data within the buffer.</param>
+        /// <param name="length">Length of the input data in the buffer.</param>
+        /// <returns>CRC-32C of the data in the buffer.</returns>
+        public static uint ComputeAndWriteToEnd(byte[] input, int offset, int length)
 		{
 			if (length + 4 > input.Length)
 				throw new ArgumentOutOfRangeException("length", "Length of data should be less than array length - 4 bytes of CRC data");
@@ -162,7 +193,10 @@ namespace Force.Crc32
 		/// </summary>
 		protected override void HashCore(byte[] input, int offset, int length)
 		{
-			_currentCrc = AppendInternal(_currentCrc, input, offset, length);
+            using (var stream = new MemoryStream(input, offset, length, false, false))
+            {
+                _currentCrc = AppendInternal(_currentCrc, stream);
+            }
 		}
 
 		/// <summary>
@@ -178,14 +212,9 @@ namespace Force.Crc32
 
 		private static readonly SafeProxyC _proxy = new SafeProxyC();
 
-		private static uint AppendInternal(uint initial, byte[] input, int offset, int length)
-		{
-			if (length > 0)
-			{
-				return _proxy.Append(initial, input, offset, length);
-			}
-			else
-				return initial;
-		}
+		private static uint AppendInternal(uint initial, Stream stream)
+        {
+            return stream.Length > 0 ? _proxy.Append(initial, stream) : initial;
+        }
 	}
 }

@@ -10,9 +10,8 @@ namespace Force.Crc32
 	{
 		private const uint Poly = 0x82F63B78u;
 
-		internal SafeProxyC()
+		internal SafeProxyC() : base(Poly)
 		{
-			Init(Poly);
-		}
+        }
 	}
 }
