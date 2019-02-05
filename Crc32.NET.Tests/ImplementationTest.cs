@@ -31,7 +31,7 @@ namespace Force.Crc32.Tests
 			Assert.That(crc2, Is.EqualTo(crc1));
 		}
 #endif
-		
+
 		[Test]
 		public void ResultConsistency2()
 		{
@@ -53,7 +53,7 @@ namespace Force.Crc32.Tests
 			Console.WriteLine(crc2.ToString("X8"));
 			Assert.That(crc1, Is.EqualTo(crc2));
 		}
-#endif	
+#endif
 
 		[Test]
 		public void PartIsWhole()
@@ -121,46 +121,46 @@ namespace Force.Crc32.Tests
 			}
 		}
 
-        [Test]
-        public void Compute_With_Stream_Should_Be_Consistent()
-        {
-            var buf = new byte[5000];
-            var r = new Random();
-            r.NextBytes(buf);
+		[Test]
+		public void Compute_With_Stream_Should_Be_Consistent()
+		{
+			var buf = new byte[5000];
+			var r = new Random();
+			r.NextBytes(buf);
 
-            using (var ms = new MemoryStream(buf))
-            {
-                Assert.AreEqual(Crc32Algorithm.Compute(buf), Crc32Algorithm.Compute(ms));
-            }
-        }
+			using (var ms = new MemoryStream(buf))
+			{
+				Assert.AreEqual(Crc32Algorithm.Compute(buf), Crc32Algorithm.Compute(ms));
+			}
+		}
 
-        [Test]
-        public void Compute_And_Write_To_End_With_Stream_Should_Be_Consistent()
-        {
-            var buf = new byte[5000];
-            var r = new Random();
-            r.NextBytes(buf);
+		[Test]
+		public void Compute_And_Write_To_End_With_Stream_Should_Be_Consistent()
+		{
+			var buf = new byte[5000];
+			var r = new Random();
+			r.NextBytes(buf);
 
-            var copyA = new byte[buf.Length + 4];
-            Array.Copy(buf, copyA, buf.Length);
+			var copyA = new byte[buf.Length + 4];
+			Array.Copy(buf, copyA, buf.Length);
 
-            Crc32Algorithm.ComputeAndWriteToEnd(copyA);
+			Crc32Algorithm.ComputeAndWriteToEnd(copyA);
 
-            using (var ms = new MemoryStream())
-            {
-                ms.Write(buf, 0, buf.Length);
-                ms.Seek(0, SeekOrigin.Begin);
+			using (var ms = new MemoryStream())
+			{
+				ms.Write(buf, 0, buf.Length);
+				ms.Seek(0, SeekOrigin.Begin);
 
-                Crc32Algorithm.ComputeAndWriteToEnd(ms, buf.Length);
+				Crc32Algorithm.ComputeAndWriteToEnd(ms, buf.Length);
 
-                ms.Seek(-4, SeekOrigin.End);
+				ms.Seek(-4, SeekOrigin.End);
 
-                for (int i = 0; i < 4; ++i)
-                {
-                    var index = i + buf.Length;
-                    Assert.AreEqual(copyA[index], ms.ReadByte());
-                }
-            }
-        }
-    }
+				for (int i = 0; i < 4; ++i)
+				{
+					var index = i + buf.Length;
+					Assert.AreEqual(copyA[index], ms.ReadByte());
+				}
+			}
+		}
+	}
 }
