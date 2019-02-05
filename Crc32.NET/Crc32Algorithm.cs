@@ -148,6 +148,7 @@ namespace Force.Crc32
                     break;
                 }
                 crc = Append(crc, buffer, 0, bytesRead);
+                totalRemaining -= bytesRead;
             }
 
             return crc;
