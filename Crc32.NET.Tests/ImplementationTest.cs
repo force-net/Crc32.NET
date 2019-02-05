@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -119,5 +120,47 @@ namespace Force.Crc32.Tests
 				Assert.That(Crc32Algorithm.IsValidWithCrcAtEnd(buf, 1, length - 2 + 4), Is.False);
 			}
 		}
-	}
+
+        [Test]
+        public void Compute_With_Stream_Should_Be_Consistent()
+        {
+            var buf = new byte[5000];
+            var r = new Random();
+            r.NextBytes(buf);
+
+            using (var ms = new MemoryStream(buf))
+            {
+                Assert.AreEqual(Crc32Algorithm.Compute(buf), Crc32Algorithm.Compute(ms));
+            }
+        }
+
+        [Test]
+        public void Compute_And_Write_To_End_With_Stream_Should_Be_Consistent()
+        {
+            var buf = new byte[5000];
+            var r = new Random();
+            r.NextBytes(buf);
+
+            var copyA = new byte[buf.Length + 4];
+            Array.Copy(buf, copyA, buf.Length);
+
+            Crc32Algorithm.ComputeAndWriteToEnd(copyA);
+
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(buf, 0, buf.Length);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                Crc32Algorithm.ComputeAndWriteToEnd(ms, buf.Length);
+
+                ms.Seek(-4, SeekOrigin.End);
+
+                for (int i = 0; i < 4; ++i)
+                {
+                    var index = i + buf.Length;
+                    Assert.AreEqual(copyA[index], ms.ReadByte());
+                }
+            }
+        }
+    }
 }

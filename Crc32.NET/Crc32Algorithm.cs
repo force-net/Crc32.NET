@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace Force.Crc32
@@ -107,19 +108,91 @@ namespace Force.Crc32
 				throw new ArgumentOutOfRangeException("length", "Length of data should be less than array length - 4 bytes of CRC data");
 			var crc = Append(0, input, offset, length);
 			var r = offset + length;
-			input[r] = (byte)crc;
-			input[r + 1] = (byte)(crc >> 8);
-			input[r + 2] = (byte)(crc >> 16);
-			input[r + 3] = (byte)(crc >> 24);
-			return crc;
-		}
+			SetCrcBytes(input, r, crc);
+            return crc;
+        }
 
-		/// <summary>
-		/// Computes CRC-32 from input buffer - 4 bytes and writes it as last 4 bytes of buffer. Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[])"/>
-		/// </summary>
-		/// <param name="input">Input buffer with data to be checksummed.</param>
-		/// <returns>CRC-32 of the data in the buffer.</returns>
-		public static uint ComputeAndWriteToEnd(byte[] input)
+        private static void SetCrcBytes(byte[] input, int offset, uint crc)
+        {
+            input[offset] = (byte) crc;
+            input[offset + 1] = (byte) (crc >> 8);
+            input[offset + 2] = (byte) (crc >> 16);
+            input[offset + 3] = (byte) (crc >> 24);
+        }
+
+        /// <summary>
+        /// Computes CRC-32 from input stream.
+        /// </summary>
+        /// <param name="input">Input stream with data to be checksummed.</param>
+        /// <param name="length">Length of the input data in the stream.</param>
+        /// <returns>CRC-32 of the data in the stream.</returns>
+        public static uint Compute(Stream input, long length)
+        {
+            if (!input.CanRead)
+            {
+                throw new ArgumentException("input", "Input stream must be readable");
+            }
+
+            const int bufferLength = 4096;
+            var buffer = new byte[bufferLength];
+            uint crc = 0;
+            var totalRemaining = length;
+
+            while (true)
+            {
+                var lengthToRead = (int)Math.Min(totalRemaining, bufferLength);
+
+                var bytesRead = input.Read(buffer, 0, lengthToRead);
+                if (bytesRead == 0)
+                {
+                    break;
+                }
+                crc = Append(crc, buffer, 0, bytesRead);
+            }
+
+            return crc;
+        }
+
+        /// <summary>
+        /// Computes CRC-32 from entire input stream.
+        /// </summary>
+        /// <param name="input">Input stream with data to be checksummed.</param>
+        /// <returns>CRC-32 of the data in the stream.</returns>
+        public static uint Compute(Stream input)
+        {
+            return Compute(input, long.MaxValue);
+        }
+
+        /// <summary>
+        /// Computes CRC-32 from input stream and writes it at the end.
+        /// </summary>
+        /// <param name="input">Input stream with data to be checksummed.</param>
+        /// <param name="length">Length of the input data in the stream.</param>
+        /// <returns>CRC-32 of the data in the stream.</returns>
+        public static uint ComputeAndWriteToEnd(Stream input, long length)
+        {
+            if (!input.CanWrite)
+            {
+                throw new ArgumentException("input", "Input stream must be writable");
+            }
+
+            var crc = Compute(input, length);
+
+            var writeBuffer = new byte[4];
+
+            SetCrcBytes(writeBuffer, 0, crc);
+
+            input.Write(writeBuffer, 0, writeBuffer.Length);
+
+            return crc;
+        }
+
+        /// <summary>
+        /// Computes CRC-32 from input buffer - 4 bytes and writes it as last 4 bytes of buffer. Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[])"/>
+        /// </summary>
+        /// <param name="input">Input buffer with data to be checksummed.</param>
+        /// <returns>CRC-32 of the data in the buffer.</returns>
+        public static uint ComputeAndWriteToEnd(byte[] input)
 		{
 			if (input.Length < 4)
 				throw new ArgumentOutOfRangeException("input", "Input array should be 4 bytes at least");
