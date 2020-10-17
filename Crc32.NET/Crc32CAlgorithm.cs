@@ -1,4 +1,7 @@
 ﻿using System;
+#if NETCORE30
+using System.Buffers.Binary;
+#endif
 using System.Security.Cryptography;
 
 namespace Force.Crc32
@@ -14,7 +17,7 @@ namespace Force.Crc32
 		private readonly bool _isBigEndian = true;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Crc32CAlgorithm"/> class. 
+		/// Initializes a new instance of the <see cref="Crc32CAlgorithm"/> class.
 		/// </summary>
 		public Crc32CAlgorithm()
 		{
@@ -24,7 +27,7 @@ namespace Force.Crc32
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Crc32CAlgorithm"/> class. 
+		/// Initializes a new instance of the <see cref="Crc32CAlgorithm"/> class.
 		/// </summary>
 		/// <param name="isBigEndian">Should return bytes result as big endian or little endian</param>
 		public Crc32CAlgorithm(bool isBigEndian = true)
@@ -71,6 +74,23 @@ namespace Force.Crc32
 			return AppendInternal(initial, input, 0, input.Length);
 		}
 
+#if NETCORE20 || NETCORE30
+        /// <summary>
+        /// Computes CRC-32 from multiple buffers.
+        /// Call this method multiple times to chain multiple buffers.
+        /// </summary>
+        /// <param name="initial">
+        /// Initial CRC value for the algorithm. It is zero for the first buffer.
+        /// Subsequent buffers should have their initial value set to CRC value returned by previous call to this method.
+        /// </param>
+        /// <param name="input">Input buffer containing data to be checksummed.</param>
+        /// <returns>Accumulated CRC-32 of all buffers processed so far.</returns>
+        public static uint Append(uint initial, ReadOnlySpan<byte> input)
+        {
+            return AppendInternal(initial, input);
+        }
+#endif
+
 		/// <summary>
 		/// Computes CRC-32C from input buffer.
 		/// </summary>
@@ -92,6 +112,18 @@ namespace Force.Crc32
 		{
 			return Append(0, input);
 		}
+
+#if NETCORE20 || NETCORE30
+        /// <summary>
+        /// Computes CRC-32 from input buffer.
+        /// </summary>
+        /// <param name="input">Input buffer with data to be checksummed.</param>
+        /// <returns>CRC-32 of the data in the buffer.</returns>
+        public static uint Compute(ReadOnlySpan<byte> input)
+        {
+            return Append(0, input);
+        }
+#endif
 
 		/// <summary>
 		/// Computes CRC-32C from input buffer and writes it after end of data (buffer should have 4 bytes reserved space for it). Can be used in conjunction with <see cref="IsValidWithCrcAtEnd(byte[],int,int)"/>
@@ -165,8 +197,18 @@ namespace Force.Crc32
 			_currentCrc = AppendInternal(_currentCrc, input, offset, length);
 		}
 
+#if NETCORE30
+        /// <summary>
+        /// Appends CRC-32 from given buffer
+        /// </summary>
+        protected override void HashCore(ReadOnlySpan<byte> source)
+        {
+            _currentCrc = AppendInternal(_currentCrc, source);
+        }
+#endif
+
 		/// <summary>
-		/// Computes CRC-32C from <see cref="HashCore"/>
+		/// Computes CRC-32C from <see cref="HashCore(byte[], int, int)"/>
 		/// </summary>
 		protected override byte[] HashFinal()
 		{
@@ -175,6 +217,32 @@ namespace Force.Crc32
 			else
 				return new[] { (byte)_currentCrc, (byte)(_currentCrc >> 8), (byte)(_currentCrc >> 16), (byte)(_currentCrc >> 24) };
 		}
+
+#if NETCORE30
+        /// <summary>
+		/// Computes CRC-32 from <see cref="HashCore(ReadOnlySpan{byte})"/>
+		/// </summary>
+		protected override bool TryHashFinal(Span<byte> destination, out int bytesWritten)
+		{
+            if (destination.Length < 4)
+            {
+                bytesWritten = 0;
+                return false;
+            }
+
+            if (_isBigEndian)
+            {
+                BinaryPrimitives.WriteUInt32BigEndian(destination, _currentCrc);
+            }
+            else
+            {
+                BinaryPrimitives.WriteUInt32LittleEndian(destination, _currentCrc);
+            }
+
+            bytesWritten = 4;
+            return true;
+        }
+#endif
 
 		private static readonly SafeProxyC _proxy = new SafeProxyC();
 
@@ -187,5 +255,17 @@ namespace Force.Crc32
 			else
 				return initial;
 		}
+
+#if NETCORE20 || NETCORE30
+        private static uint AppendInternal(uint initial, ReadOnlySpan<byte> input)
+        {
+            if (input.Length > 0)
+            {
+                return _proxy.Append(initial, input);
+            }
+            else
+                return initial;
+        }
+#endif
 	}
 }
