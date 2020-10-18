@@ -1,4 +1,7 @@
 ﻿using System;
+#if NETCORE30
+using System.Buffers.Binary;
+#endif
 using System.Linq;
 using System.Text;
 
@@ -30,7 +33,7 @@ namespace Force.Crc32.Tests
 			Assert.That(crc2, Is.EqualTo(crc1));
 		}
 #endif
-		
+
 		[Test]
 		public void ResultConsistency2()
 		{
@@ -52,7 +55,28 @@ namespace Force.Crc32.Tests
 			Console.WriteLine(crc2.ToString("X8"));
 			Assert.That(crc1, Is.EqualTo(crc2));
 		}
-#endif	
+#endif
+
+#if NETCORE30
+        [Test]
+        public void ResultConsistencyAsHashAlgorithm_SpanVsArray()
+        {
+            var bytes = new byte[30000];
+            new Random().NextBytes(bytes);
+            var e = new Crc32Algorithm();
+            var c = new Crc32Algorithm();
+            var crc1 = BitConverter.ToInt32(e.ComputeHash(bytes), 0);
+
+            var dest = new byte[4];
+			Assert.That(c.TryComputeHash(bytes, dest, out var bytesWritten), Is.True);
+			Assert.That(bytesWritten, Is.EqualTo(4));
+            var crc2 = BinaryPrimitives.ReadInt32LittleEndian(dest);
+
+            Console.WriteLine(crc1.ToString("X8"));
+            Console.WriteLine(crc2.ToString("X8"));
+            Assert.That(crc1, Is.EqualTo(crc2));
+        }
+#endif
 
 		[Test]
 		public void PartIsWhole()

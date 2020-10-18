@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netcoreapp3.1;net461</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Crc32.NET.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -39,6 +39,9 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <DefineConstants>$(DefineConstants);NETCORE;NETCORE20</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <DefineConstants>$(DefineConstants);NETCORE;NETCORE30</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);COREVERSION</DefineConstants>
