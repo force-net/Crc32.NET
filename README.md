@@ -6,9 +6,9 @@ Optimized and fast managed implementation of Crc32 & Crc32C (Castagnoly) algorit
 
 Installation through Nuget:
 
-```
-	Install-Package Crc32.NET
-```
+````bash
+> Install-Package Crc32.NET
+````
 
 ### Version 1.1.0 Remarks
 
@@ -25,15 +25,19 @@ This feature can be used for more convenient CRC usage, e.g. validation of corre
 
 So in 1.2.0 version, I've added 2 methods (with overloads) to use this feature:
 
-```
+````csharp
 var inputArray = new byte[realDataLength + 4];
+
 // write real data to inputArray
 Crc32Algorithm.ComputeAndWriteToEnd(inputArray); // last 4 bytes contains CRC
+
 // transferring data or writing reading, and checking as final operation
 if (!Crc32Algorithm.IsValidWithCrcAtEnd(inputArray))
-	throw new InvalidOperationException("Data was tampered");
+{
+    throw new InvalidOperationException("Data was tampered");
+}
 
-```
+````
 
 In other words, you should pass some input buffer to calculation function and it will write CRC data at last 4 bytes. After that, when you need validation, you should pass this buffer to validation function and it will return _is data correct_.
  
