@@ -22,12 +22,6 @@ namespace Force.Crc32.Tests
 		}
 
 		[Test]
-		public void ThroughputCrc32_By_dariogriffo()
-		{
-			Calculate(new Crc32_Crc32Algorithm());
-		}
-
-		[Test]
 		public void ThroughputCrc32_By_Data_HashFunction_Crc()
 		{
 			Calculate(new System_Data_HashFunction_CRC());
@@ -44,14 +38,25 @@ namespace Force.Crc32.Tests
 		{
 			Calculate(new Crc32C_Crc32CAlgorithm());
 		}
-#else
+#endif
 		[Test]
 		public void ThroughputCrc32C_Standard()
 		{
 			Calculate(new Crc32C_Standard());
 		}
-#endif
-	
+
+		[Test]
+		public void ThroughputCrc32_By_dariogriffo()
+		{
+			Calculate(new Crc32_Crc32Algorithm());
+		}
+
+		[Test]
+		public void ThroughputCrc32C_By_K4os_Hash_Crc()
+		{
+			Calculate(new K4os_Hash_Crc());
+		}
+
 		[Test]
 		public void ThroughputCrc32_By_Me()
 		{
@@ -83,14 +88,6 @@ namespace Force.Crc32.Tests
 		public void ThroughputCrc32_By_Me_Intrinsics()
 		{
 			Calculate(new Force_Intrinsics_Crc32_Crc32Algorithm());
-		}
-#endif
-
-#if COREVERSION && NETFRAMEWORK13
-		[Test]
-		public void ThroughputCrc32C_By_K4os_Hash_Crc()
-		{
-			Calculate(new K4os_Hash_Crc());
 		}
 #endif
 

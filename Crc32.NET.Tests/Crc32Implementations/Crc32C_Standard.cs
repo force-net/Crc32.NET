@@ -1,5 +1,4 @@
-﻿#if !NETFRAMEWORK
-namespace Force.Crc32.Tests.Crc32Implementations
+﻿namespace Force.Crc32.Tests.Crc32Implementations
 {
 	public class Crc32C_Standard : CrcCalculator
 	{
@@ -15,4 +14,3 @@ namespace Force.Crc32.Tests.Crc32Implementations
 		}
 	}
 }
-#endif

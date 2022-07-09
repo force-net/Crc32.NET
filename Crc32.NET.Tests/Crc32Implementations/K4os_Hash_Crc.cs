@@ -1,5 +1,4 @@
-﻿#if COREVERSION
-namespace Force.Crc32.Tests.Crc32Implementations
+﻿namespace Force.Crc32.Tests.Crc32Implementations
 {
 	public class K4os_Hash_Crc : CrcCalculator
 	{
@@ -13,4 +12,3 @@ namespace Force.Crc32.Tests.Crc32Implementations
 		}
 	}
 }
-#endif
