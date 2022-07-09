@@ -8,7 +8,7 @@ namespace Force.Crc32.Tests
 	[TestFixture]
 	public class PerformanceTest
 	{
-#if !NETCORE
+#if NETFRAMEWORK
 		[Test]
 		public void ThroughputCHCrc32_By_tanglebones()
 		{
@@ -70,7 +70,23 @@ namespace Force.Crc32.Tests
 			Calculate(new Force_Crc32_Crc32CAlgorithm());
 		}
 
-#if COREVERSION && !NETCORE13
+#if NETCOREAPP3_0_OR_GREATER
+		[Test]
+		public void ThroughputCrc32C_By_Me_Intrinsics()
+		{
+			Calculate(new Force_Intrinsics_Crc32_Crc32CAlgorithm());
+		}
+#endif
+
+#if NET5_0_OR_GREATER
+		[Test]
+		public void ThroughputCrc32_By_Me_Intrinsics()
+		{
+			Calculate(new Force_Intrinsics_Crc32_Crc32Algorithm());
+		}
+#endif
+
+#if COREVERSION && NETFRAMEWORK13
 		[Test]
 		public void ThroughputCrc32C_By_K4os_Hash_Crc()
 		{
@@ -80,6 +96,11 @@ namespace Force.Crc32.Tests
 
 		private void Calculate(CrcCalculator implementation, int size = 65536)
 		{
+			if(!implementation.IsSupported)
+			{
+				return;
+			}
+
 			var data = new byte[size];
 			var random = new Random();
 			random.NextBytes(data);

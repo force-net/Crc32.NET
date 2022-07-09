@@ -4,16 +4,16 @@ using System.Text;
 
 using NUnit.Framework;
 
-#if !NETCORE
+#if NETFRAMEWORK
 using E = Crc32C.Crc32CAlgorithm;
 #endif
+
 
 namespace Force.Crc32.Tests
 {
 	[TestFixture]
 	public class ImplementationCTest
 	{
-#if !NETCORE
 		[TestCase("Hello", 3)]
 		[TestCase("Nazdar", 0)]
 		[TestCase("Ahoj", 1)]
@@ -23,11 +23,20 @@ namespace Force.Crc32.Tests
 		{
 			var bytes = Encoding.ASCII.GetBytes(text);
 
+#if NETFRAMEWORK
 			var crc1 = E.Compute(bytes.Skip(offset).ToArray());
 			var crc2 = Crc32CAlgorithm.Append(0, bytes, offset, bytes.Length - offset);
 			Assert.That(crc2, Is.EqualTo(crc1));
-		}
+#elif NETCOREAPP3_0_OR_GREATER
+			if(Intrinsics.Crc32CAlgorithm.IsSupported)
+			{
+				var crc32C = new Ralph.Crc32C.Crc32C();
+				crc32C.Update(bytes, offset, bytes.Length - offset);
+				var crc3 = Intrinsics.Crc32CAlgorithm.Compute(bytes, offset, bytes.Length - offset);
+				Assert.That(crc3, Is.EqualTo(crc32C.GetIntValue()));
+			}
 #endif
+		}
 
 		[Test]
 		public void ResultConsistency2()
@@ -36,7 +45,19 @@ namespace Force.Crc32.Tests
 			Assert.That(Crc32CAlgorithm.Compute(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), Is.EqualTo(0xB219DB69));
 		}
 
-#if !NETCORE
+#if NETCOREAPP3_0_OR_GREATER
+		[Test]
+		public void ResultConsistencyIntrinsics()
+		{
+			if(Intrinsics.Crc32CAlgorithm.IsSupported)
+			{
+				Assert.That(Intrinsics.Crc32CAlgorithm.Compute(new byte[] { 1 }), Is.EqualTo(0xA016D052));
+				Assert.That(Intrinsics.Crc32CAlgorithm.Compute(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), Is.EqualTo(0xB219DB69));
+			}
+		}
+#endif
+
+#if NETFRAMEWORK
 		[Test]
 		public void ResultConsistencyAsHashAlgorithm()
 		{
