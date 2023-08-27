@@ -4,7 +4,7 @@ using System.Text;
 
 using NUnit.Framework;
 
-#if !NETCORE
+#if NETFRAMEWORK
 using E = Crc32.Crc32Algorithm;
 #endif
 
@@ -15,7 +15,6 @@ namespace Force.Crc32.Tests
 	public class ImplementationTest
 	{
 
-#if !NETCORE
 		[TestCase("Hello", 3)]
 		[TestCase("Nazdar", 0)]
 		[TestCase("Ahoj", 1)]
@@ -25,11 +24,20 @@ namespace Force.Crc32.Tests
 		{
 			var bytes = Encoding.ASCII.GetBytes(text);
 
+#if NETFRAMEWORK
 			var crc1 = E.Compute(bytes.Skip(offset).ToArray());
 			var crc2 = Crc32Algorithm.Append(0, bytes, offset, bytes.Length - offset);
 			Assert.That(crc2, Is.EqualTo(crc1));
-		}
 #endif
+#if NET5_0_OR_GREATER
+			if(Intrinsics.Crc32Algorithm.IsSupported)
+			{
+				var crc1 = K4os.Hash.Crc.Crc32.DigestOf(bytes, offset, bytes.Length - offset);
+				var crc2 = Intrinsics.Crc32Algorithm.Compute(bytes, offset, bytes.Length - offset);
+				Assert.That(crc2, Is.EqualTo(crc1));
+			}
+#endif
+		}
 		
 		[Test]
 		public void ResultConsistency2()
@@ -38,7 +46,20 @@ namespace Force.Crc32.Tests
 			Assert.That(Crc32Algorithm.Compute(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), Is.EqualTo(622876539));
 		}
 
-#if !NETCORE
+#if NET5_0_OR_GREATER
+		[Test]
+		public void ResultConsistencyIntrinsics()
+		{
+			if(Intrinsics.Crc32Algorithm.IsSupported)
+			{
+				Assert.That(Intrinsics.Crc32Algorithm.Compute(new byte[] { 1 }), Is.EqualTo(2768625435));
+				Assert.That(Intrinsics.Crc32Algorithm.Compute(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), Is.EqualTo(622876539));
+			}
+		}
+#endif
+
+
+#if NETFRAMEWORK
 		[Test]
 		public void ResultConsistencyAsHashAlgorithm()
 		{

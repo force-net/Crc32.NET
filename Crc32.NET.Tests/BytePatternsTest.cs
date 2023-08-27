@@ -1,4 +1,4 @@
-﻿#if !NETCORE
+﻿#if NETFRAMEWORK
 using System;
 using System.Linq;
 using Force.Crc32.Tests.Crc32Implementations;

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Crc32.NET.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -13,34 +13,22 @@
     <ProjectReference Include="..\Crc32.NET\Crc32.NET.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="K4os.Hash.Crc" Version="1.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
     <PackageReference Include="CRC32C.Standard" Version="1.0.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="Crc32" Version="1.1.0" />
+    <PackageReference Include="K4os.Hash.Crc" Version="1.1.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="NETStandard.Library" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <PackageReference Include="CH.Crc32" Version="1.0" />
-    <PackageReference Include="Crc32" Version="1.0.0" />
-    <PackageReference Include="Crc32C.NET" Version="1.0.5.0" />
+    <PackageReference Include="Crc32" Version="1.1.0" />
+    <PackageReference Include="Crc32C.NET" Version="1.0.5" />
     <PackageReference Include="Dexiom.QuickCrc32" Version="1.0.3" />
-    <PackageReference Include="Klinkby.Checksum" Version="1.0.2.1" />
-    <PackageReference Include="System.Data.HashFunction.Core" Version="1.8.2.2" />
-    <PackageReference Include="System.Data.HashFunction.CRC" Version="1.8.2.2" />
-    <PackageReference Include="System.Data.HashFunction.Interfaces" Version="1.0.0.2" />
+    <PackageReference Include="Klinkby.Checksum" Version="1.0.2" />
+    <PackageReference Include="System.Data.HashFunction.Core" Version="2.0.0" />
+    <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
+    <PackageReference Include="System.Data.HashFunction.Interfaces" Version="2.0.0" />
     <PackageReference Include="CRC32C.Standard" Version="1.0.0" />
-    <!--PackageReference Include="NUnit" Version="3.6.0" /-->
   </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE;;NETCORE13</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <DefineConstants>$(DefineConstants);NETCORE;NETCORE20</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);COREVERSION</DefineConstants>
-  </PropertyGroup>
 </Project>

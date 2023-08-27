@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>1.2.1</VersionPrefix>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;net20</TargetFrameworks>
+    <VersionPrefix>1.3.0</VersionPrefix>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Crc32.NET</AssemblyName>
     <!--DelaySign>true</DelaySign>
@@ -12,6 +12,7 @@
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.0' ">2.0.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'BuildCore' ">
     <DelaySign>true</DelaySign>

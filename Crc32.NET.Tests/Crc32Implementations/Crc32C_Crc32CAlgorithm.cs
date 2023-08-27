@@ -1,4 +1,4 @@
-﻿#if !NETCORE
+﻿#if NETFRAMEWORK
 namespace Force.Crc32.Tests.Crc32Implementations
 {
 	public class Crc32C_Crc32CAlgorithm : CrcCalculator
