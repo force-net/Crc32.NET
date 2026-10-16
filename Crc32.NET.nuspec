@@ -6,19 +6,26 @@
     <version>2.0.0</version>
     <authors>force</authors>
     <owners>force</owners>
-    <licenseUrl>https://github.com/force-net/Crc32.NET/blob/develop/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
+	<repository type="git" url="https://github.com/force-net/Crc32.NET" />
     <projectUrl>https://github.com/force-net/Crc32.NET</projectUrl>
-    <iconUrl>http://files.force-net.com/crc32-nuget-ico.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <readme>README.md</readme>
+    <icon>crc32-nuget-ico.png</icon>
     <description>Fast version of Crc32 &amp; Crc32C algorithms for .NET and .NET Core. It is up to 3x-5x times better than other "fast" implemenations. Code based on Crc32C.NET library.</description>
     <releaseNotes>
-Added helper methods for computing and validating Crc32 (can be convenient sometimes)
-Added support for .NET Standard 2.0 
+* Removed support for .net2.0 and .netstandard1.3
+* Added support for .net6.0
+* For core version ReadOnlySpan versions was added
+* Optimized CRC32 version for .net6.0
+* Intrinsic for CRC32C version for .net6.0
     </releaseNotes>
     <copyright>Copyright by Force 2016-2026</copyright>
     <tags>crc32 crc-32 crc crc32c .NET</tags>
     <dependencies>
-      <group targetFramework="net20">
+      <group targetFramework="net40">
+      </group>
+      <group targetFramework="net60">
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="NETStandard.Library" version="[2.0.0, )" />
@@ -26,6 +33,8 @@ Added support for .NET Standard 2.0
     </dependencies>
   </metadata>
   <files>
+    <file src="README.md" target="" />
+  	<file src="crc32-nuget-ico.png" target="" />
 	<file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net40" />
 	<file src="Crc32.NET\bin\BuildCore\netstandard2.0\Crc32.NET.dll" target="lib\netstandard2.0" />
 	<file src="Crc32.NET\bin\BuildCore\netstandard2.0\Crc32.NET.xml" target="lib\netstandard2.0" />
