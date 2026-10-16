@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Force")]
 [assembly: AssemblyProduct("Crc32.NET")]
-[assembly: AssemblyCopyright("Copyright © Force 2016-2017")]
+[assembly: AssemblyCopyright("Copyright © Force 2016-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

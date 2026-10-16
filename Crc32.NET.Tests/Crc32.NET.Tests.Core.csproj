@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0;net461</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Crc32.NET.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -31,7 +31,6 @@
     <PackageReference Include="System.Data.HashFunction.Core" Version="1.8.2.2" />
     <PackageReference Include="System.Data.HashFunction.CRC" Version="1.8.2.2" />
     <PackageReference Include="System.Data.HashFunction.Interfaces" Version="1.0.0.2" />
-    <PackageReference Include="CRC32C.Standard" Version="1.0.0" />
     <!--PackageReference Include="NUnit" Version="3.6.0" /-->
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
@@ -39,6 +38,9 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <DefineConstants>$(DefineConstants);NETCORE;NETCORE20</DefineConstants>
+  </PropertyGroup>
+   <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <DefineConstants>$(DefineConstants);NETCORE;NET60</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);COREVERSION</DefineConstants>

@@ -149,6 +149,50 @@ namespace Force.Crc32
 			return Append(0, input, 0, input.Length) == 0x48674BC7;
 		}
 
+#if NETCOREAPP
+		/// <summary>
+		/// Computes CRC-32C from a span without copying the input.
+		/// </summary>
+		public static uint Compute(ReadOnlySpan<byte> input)
+		{
+			return Append(0, input);
+		}
+
+		/// <summary>
+		/// Appends a span to a previously computed CRC-32C. Use zero for the first buffer.
+		/// </summary>
+		public static uint Append(uint initial, ReadOnlySpan<byte> input)
+		{
+			return input.IsEmpty ? initial : _proxy.Append(initial, input);
+		}
+
+		/// <summary>
+		/// Computes CRC-32C and writes it in little endian order into the last four bytes of the span.
+		/// </summary>
+		public static uint ComputeAndWriteToEnd(Span<byte> input)
+		{
+			if (input.Length < 4)
+				throw new ArgumentOutOfRangeException("input", "Input span should be 4 bytes at least");
+			var length = input.Length - 4;
+			var crc = Compute(input.Slice(0, length));
+			input[length] = (byte)crc;
+			input[length + 1] = (byte)(crc >> 8);
+			input[length + 2] = (byte)(crc >> 16);
+			input[length + 3] = (byte)(crc >> 24);
+			return crc;
+		}
+
+		/// <summary>
+		/// Validates a buffer ending with its little endian CRC-32C checksum.
+		/// </summary>
+		public static bool IsValidWithCrcAtEnd(ReadOnlySpan<byte> input)
+		{
+			if (input.Length < 4)
+				throw new ArgumentOutOfRangeException("input", "Input span should be 4 bytes at least");
+			return Compute(input) == 0x48674BC7;
+		}
+#endif
+
 		/// <summary>
 		/// Resets internal state of the algorithm. Used internally.
 		/// </summary>
@@ -165,8 +209,35 @@ namespace Force.Crc32
 			_currentCrc = AppendInternal(_currentCrc, input, offset, length);
 		}
 
+#if NETCOREAPP
 		/// <summary>
-		/// Computes CRC-32C from <see cref="HashCore"/>
+		/// Appends CRC-32C from a span without copying the input.
+		/// </summary>
+		protected override void HashCore(ReadOnlySpan<byte> input)
+		{
+			_currentCrc = Append(_currentCrc, input);
+		}
+
+		/// <summary>
+		/// Writes the checksum directly to the destination in the configured byte order.
+		/// </summary>
+		protected override bool TryHashFinal(Span<byte> destination, out int bytesWritten)
+		{
+			if (destination.Length < 4)
+			{
+				bytesWritten = 0;
+				return false;
+			}
+
+			for (int i = 0; i < 4; i++)
+				destination[i] = (byte)(_currentCrc >> ((_isBigEndian ? 3 - i : i) * 8));
+			bytesWritten = 4;
+			return true;
+		}
+#endif
+
+		/// <summary>
+		/// Computes CRC-32C from <see cref="HashCore(byte[], int, int)"/>
 		/// </summary>
 		protected override byte[] HashFinal()
 		{
@@ -180,12 +251,16 @@ namespace Force.Crc32
 
 		private static uint AppendInternal(uint initial, byte[] input, int offset, int length)
 		{
+#if NETCOREAPP
+			return Append(initial, new ReadOnlySpan<byte>(input, offset, length));
+#else
 			if (length > 0)
 			{
 				return _proxy.Append(initial, input, offset, length);
 			}
 			else
 				return initial;
+#endif
 		}
 	}
 }

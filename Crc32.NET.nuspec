@@ -3,7 +3,7 @@
   <metadata>
     <id>Crc32.NET</id>
     <title>Crc32 for .NET</title>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
     <authors>force</authors>
     <owners>force</owners>
     <licenseUrl>https://github.com/force-net/Crc32.NET/blob/develop/LICENSE</licenseUrl>
@@ -15,13 +15,10 @@
 Added helper methods for computing and validating Crc32 (can be convenient sometimes)
 Added support for .NET Standard 2.0 
     </releaseNotes>
-    <copyright>Copyright by Force 2016-2017</copyright>
+    <copyright>Copyright by Force 2016-2026</copyright>
     <tags>crc32 crc-32 crc crc32c .NET</tags>
     <dependencies>
       <group targetFramework="net20">
-      </group>
-      <group targetFramework=".NETStandard1.3">
-        <dependency id="NETStandard.Library" version="[1.6.0, )" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="NETStandard.Library" version="[2.0.0, )" />
@@ -29,10 +26,10 @@ Added support for .NET Standard 2.0
     </dependencies>
   </metadata>
   <files>
-	<file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net20" />
-	<file src="Crc32.NET\bin\BuildCore\netstandard1.3\Crc32.NET.dll" target="lib\netstandard1.3" />
-	<file src="Crc32.NET\bin\BuildCore\netstandard1.3\Crc32.NET.xml" target="lib\netstandard1.3" />
+	<file src="Crc32.NET\bin\Build\Crc32.NET.*" target="lib\net40" />
 	<file src="Crc32.NET\bin\BuildCore\netstandard2.0\Crc32.NET.dll" target="lib\netstandard2.0" />
 	<file src="Crc32.NET\bin\BuildCore\netstandard2.0\Crc32.NET.xml" target="lib\netstandard2.0" />
+	<file src="Crc32.NET\bin\BuildCore\net6.0\Crc32.NET.dll" target="lib\net6.0" />
+	<file src="Crc32.NET\bin\BuildCore\net6.0\Crc32.NET.xml" target="lib\net6.0" />
   </files>
 </package>

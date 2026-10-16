@@ -36,7 +36,28 @@ if (!Crc32Algorithm.IsValidWithCrcAtEnd(inputArray))
 ```
 
 In other words, you should pass some input buffer to calculation function and it will write CRC data at last 4 bytes. After that, when you need validation, you should pass this buffer to validation function and it will return _is data correct_.
- 
+
+### Version 2.0.0 Remarks
+
+After long pause, project was updated to next major version. Changes:
+
+* Removed support for .net2.0 and .netstandard1.3
+* Added support for .net6.0
+* For core version ReadOnlySpan versions was added
+* Optimized CRC32 version for .net6.0
+* Intrinsic for CRC32C version for .net6.0
+
+So, results now:
+
+Algorithm | framework | Speed
+--------|-------|-------
+CRC32(C) | .net4.0 | 1090 MB/s
+CRC32 | .net6.0 | 1378 MB/s
+CRC32C | .net6.0 | 18128 MB/s
+
+Other libraries were not checked now, it also can be already optimized.
+
+This is "maintenance" release with optimizations and new frameworks, but it not checked carefully and can be optimized more.
 
 ## Description
 
