@@ -164,7 +164,11 @@ namespace Force.Crc32
 		/// </summary>
 		public static uint Append(uint initial, ReadOnlySpan<byte> input)
 		{
-			return input.IsEmpty ? initial : _proxy.Append(initial, input);
+			if (input.IsEmpty)
+				return initial;
+			if (PclmulProxy.IsSupported && input.Length >= 16)
+				return PclmulProxy.Append(initial, input, _proxy);
+			return _proxy.Append(initial, input);
 		}
 
 		/// <summary>

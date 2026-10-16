@@ -2,7 +2,7 @@
 
 Optimized and fast managed implementation of Crc32 & Crc32C (Castagnoly) algorithms for .NET and .NET Core. 
 
-*(But if you need, I can add native implementation (with transparent .net wrapper) which is twice faster .NET version)*
+At this time, Microsoft released [https://www.nuget.org/packages/System.IO.Hashing/](https://www.nuget.org/packages/System.IO.Hashing/) package with support of CRC32, so this package is for compatibility purposes. But it still really fast. 
 
 Installation through Nuget:
 
@@ -61,6 +61,20 @@ CRC32C | .net6.0 | 18128 MB/s
 
 Other libraries were not checked now, it also can be already optimized.
 
+### Version 2.0.1 Remarks
+
+* CRC32 for .net6.0 now uses pclmulqdq to improve speed if supported and uses cast to uint if unsupported.
+It is SSE2 command, so, it should be supported at any modern cpu
+So, difference now:
+
+Algorithm | framework | Speed
+--------|-------|-------
+CRC32 at 2.0.0 | .net6.0 | 1378 MB/s
+CRC32 at 2.1.0 no pclmulqdq | .net6.0 | 1560 MB/s
+CRC32 at 2.1.0 supports pclmulqdq | .net6.0 | 2772 MB/s
+
+Idea of code from [https://www.nuget.org/packages/System.IO.Hashing/](<https://www.nuget.org/packages/System.IO.Hashing/>)
+
 This is "maintenance" release with optimizations and new frameworks, but it not checked carefully and can be optimized more.
 
 ## Description
@@ -69,7 +83,7 @@ This library is port of [Crc32C.NET](https://crc32c.angeloflogic.com/) by Robert
 
 If you do not not catch the difference, it is *C* (Castagnoli). I recommend to use Crc32C, not usual CRC32, because it can be faster (up to 20GB/s with native CPU implementation) and slightly better in error detection. But if you need exactly Crc32, this library is the best choice.
 
-### Performance
+### Performance (not checked for new versions of other packages)
 
 This library has code, which is optimized for .NET (implementation is not dumb copy-paste from google), as result, it is really fast in comparison with other implemenations. 
 

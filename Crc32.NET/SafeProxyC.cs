@@ -1,5 +1,5 @@
-﻿/* This is .NET safe implementation of Crc32C algorithm.
- * See detailed comments in Crc32 implementation
+/* This is .NET safe implementation of Crc32C algorithm.
+ * See detailed comments in Crc32 implementation. For .net core it uses intrinsic if possible
  * 
  * Max Vysokikh, 2016-2026
  */

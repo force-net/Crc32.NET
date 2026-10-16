@@ -46,7 +46,7 @@ namespace Force.Crc32
 		{
 			int offset = 0;
 			int length = input.Length;
-			// Each 16-byte iteration is guarded by length; tail reads are guarded below.
+			// Reads are guarded by complete 16-byte or 4-byte groups; the last 0-3 bytes are read individually.
 			// All table indices select a byte within one of the 16 fixed 256-entry slices.
 			uint crcLocal = uint.MaxValue ^ crc;
 
@@ -54,35 +54,60 @@ namespace Force.Crc32
 			ref byte data = ref MemoryMarshal.GetReference(input);
 			while (length >= 16)
 			{
-				var a = Unsafe.Add(ref table, (3 * 256) + Unsafe.Add(ref data, offset + 12))
-					^ Unsafe.Add(ref table, (2 * 256) + Unsafe.Add(ref data, offset + 13))
-					^ Unsafe.Add(ref table, (1 * 256) + Unsafe.Add(ref data, offset + 14))
-					^ Unsafe.Add(ref table, (0 * 256) + Unsafe.Add(ref data, offset + 15));
+				uint first = ReadUInt32(ref data, offset) ^ crcLocal;
+				uint second = ReadUInt32(ref data, offset + 4);
+				uint third = ReadUInt32(ref data, offset + 8);
+				uint fourth = ReadUInt32(ref data, offset + 12);
 
-				var b = Unsafe.Add(ref table, (7 * 256) + Unsafe.Add(ref data, offset + 8))
-					^ Unsafe.Add(ref table, (6 * 256) + Unsafe.Add(ref data, offset + 9))
-					^ Unsafe.Add(ref table, (5 * 256) + Unsafe.Add(ref data, offset + 10))
-					^ Unsafe.Add(ref table, (4 * 256) + Unsafe.Add(ref data, offset + 11));
+				var a = Unsafe.Add(ref table, (3 * 256) + (byte)fourth)
+					^ Unsafe.Add(ref table, (2 * 256) + (byte)(fourth >> 8))
+					^ Unsafe.Add(ref table, (1 * 256) + (byte)(fourth >> 16))
+					^ Unsafe.Add(ref table, (0 * 256) + (byte)(fourth >> 24));
 
-				var c = Unsafe.Add(ref table, (11 * 256) + Unsafe.Add(ref data, offset + 4)) 
-					^ Unsafe.Add(ref table, (10 * 256) + Unsafe.Add(ref data, offset + 5)) 
-					^ Unsafe.Add(ref table, (9 * 256) + Unsafe.Add(ref data, offset + 6)) 
-					^ Unsafe.Add(ref table, (8 * 256) + Unsafe.Add(ref data, offset + 7));
+				var b = Unsafe.Add(ref table, (7 * 256) + (byte)third)
+					^ Unsafe.Add(ref table, (6 * 256) + (byte)(third >> 8))
+					^ Unsafe.Add(ref table, (5 * 256) + (byte)(third >> 16))
+					^ Unsafe.Add(ref table, (4 * 256) + (byte)(third >> 24));
 
-				var d = Unsafe.Add(ref table, (15 * 256) + ((byte)crcLocal ^ Unsafe.Add(ref data, offset)))
-					^ Unsafe.Add(ref table, (14 * 256) + ((byte)(crcLocal >> 8) ^ Unsafe.Add(ref data, offset + 1)))
-					^ Unsafe.Add(ref table, (13 * 256) + ((byte)(crcLocal >> 16) ^ Unsafe.Add(ref data, offset + 2)))
-					^ Unsafe.Add(ref table, (12 * 256) + ((byte)(crcLocal >> 24) ^ Unsafe.Add(ref data, offset + 3)));
+				var c = Unsafe.Add(ref table, (11 * 256) + (byte)second)
+					^ Unsafe.Add(ref table, (10 * 256) + (byte)(second >> 8))
+					^ Unsafe.Add(ref table, (9 * 256) + (byte)(second >> 16))
+					^ Unsafe.Add(ref table, (8 * 256) + (byte)(second >> 24));
+
+				var d = Unsafe.Add(ref table, (15 * 256) + (byte)first)
+					^ Unsafe.Add(ref table, (14 * 256) + (byte)(first >> 8))
+					^ Unsafe.Add(ref table, (13 * 256) + (byte)(first >> 16))
+					^ Unsafe.Add(ref table, (12 * 256) + (byte)(first >> 24));
 
 				crcLocal = d ^ c ^ b ^ a;
 				offset += 16;
 				length -= 16;
 			}
 
+			while (length >= 4)
+			{
+				uint word = ReadUInt32(ref data, offset) ^ crcLocal;
+				crcLocal = Unsafe.Add(ref table, (3 * 256) + (byte)word)
+					^ Unsafe.Add(ref table, (2 * 256) + (byte)(word >> 8))
+					^ Unsafe.Add(ref table, (1 * 256) + (byte)(word >> 16))
+					^ Unsafe.Add(ref table, (0 * 256) + (byte)(word >> 24));
+				offset += 4;
+				length -= 4;
+			}
+
 			while (--length >= 0)
 				crcLocal = Unsafe.Add(ref table, (byte)(crcLocal ^ Unsafe.Add(ref data, offset++))) ^ crcLocal >> 8;
 
 			return crcLocal ^ uint.MaxValue;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static uint ReadUInt32(ref byte data, int offset)
+		{
+			// Slice offsets need not be aligned. Read exactly four bytes and normalize
+			// their order so that the slicing tables retain their little endian layout.
+			uint word = Unsafe.ReadUnaligned<uint>(ref Unsafe.Add(ref data, offset));
+			return BitConverter.IsLittleEndian ? word : System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(word);
 		}
 #else
 		public uint Append(uint crc, byte[] input, int offset, int length)
