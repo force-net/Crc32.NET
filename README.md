@@ -61,11 +61,12 @@ CRC32C | .net6.0 | 18128 MB/s
 
 Other libraries were not checked now, it also can be already optimized.
 
-### Version 2.0.1 Remarks
+### Version 2.1.0 Remarks
 
 * CRC32 for .net6.0 now uses pclmulqdq to improve speed if supported and uses cast to uint if unsupported.
-It is SSE2 command, so, it should be supported at any modern cpu
-So, difference now:
+It is SSE2 command, so, it should be supported at any modern cpu. for ARM binary primitives used also. Speed not checked
+
+So, difference between old and new version:
 
 Algorithm | framework | Speed
 --------|-------|-------
@@ -95,7 +96,7 @@ Library | Speed
 [Data.HashFunction.CRC](https://github.com/brandondahler/Data.HashFunction/) by Brandon Dahler | 206 MB/s
 [Dexiom.QuickCrc32](https://github.com/Dexiom/Dexiom.QuickCrc32/) by Jonathan Paré | 364 MB/s
 [K4os.Hash.Crc](https://github.com/MiloszKrajewski/K4os.Hash.Crc) by Milosz Krajewski  | 399 MB/s
-This library | **1170** MB/s
+This library | **2772** MB/s
 
 ## Some notes
 

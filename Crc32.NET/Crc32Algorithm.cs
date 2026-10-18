@@ -168,6 +168,8 @@ namespace Force.Crc32
 				return initial;
 			if (PclmulProxy.IsSupported && input.Length >= 16)
 				return PclmulProxy.Append(initial, input, _proxy);
+			if (ArmCrc32Proxy.IsSupported)
+				return ArmCrc32Proxy.Append(initial, input);
 			return _proxy.Append(initial, input);
 		}
 
